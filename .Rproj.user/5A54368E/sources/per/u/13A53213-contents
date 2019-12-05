@@ -1,0 +1,237 @@
+library(leaflet)
+
+
+topo_res <- readLines("amazonas/Resguardos_Indígenas.json") %>% paste(collapse = "\n")
+vaupes <- readLines('amazonas/vaupes.json')
+dd <-  data.frame(lat = c( 0.973, 0.962, 0.973, 0.905, 0.905, 0.892, 0.892, 0.962), 
+                  lng = c(-70.125, -70.141, -70.125, -70.079, -70.079, -70.092,  -70.092, -70.141))
+
+# leaflet() %>% setView(lng =-70, lat = 0.5 , zoom = 9) %>%
+# addProviderTiles(provider = 'OpenStreetMap.DE') %>%
+
+# addPolygons( lng = 70.125, lat = 0.973) %>% 
+# addPolygons( lng = 70.125, lat = 0.973)
+# addRectangles(
+#   lng1=- 70.125, lat1= 0.973,
+#   lng2=- 70.142, lat2= 0.905,
+#   fillColor = "red"
+# )
+
+r <- leaflet() %>% 
+  setView(lng =-70, lat = 0.5 , zoom = 9) %>%
+  addProviderTiles(provider = 'OpenStreetMap.DE') %>%
+  addTopoJSON(vaupes,
+              weight = 7,
+              color = '#3c3c3c',
+              opacity = 1,
+              fill = FALSE) %>%
+  addLabelOnlyMarkers(-70.8, 0.7, label = 'Vaupés', 
+                      labelOptions = labelOptions(noHide = T, direction = 'top', textOnly = T,
+                                                  style=list(
+                                                    'color'='#3c3c3c',
+                                                    'font-family'= 'Arial Narrow',
+                                                    'font-size' = '25px',
+                                                    'font-weight' = '900'
+                                                  ))) %>% 
+  addLabelOnlyMarkers(-71, -1, label = 'Amazonas', 
+                      labelOptions = labelOptions(noHide = T, direction = 'top', textOnly = T,
+                                                  style=list(
+                                                    'color'='#3c3c3c',
+                                                    'font-family'= 'Arial Narrow',
+                                                    'font-size' = '25px',
+                                                    'font-weight' = '900'
+                                                  ))) %>% 
+  addLabelOnlyMarkers(-72.5, 0.3, label = 'Caquetá', 
+                      labelOptions = labelOptions(noHide = T, direction = 'top', textOnly = T,
+                                                  style=list(
+                                                    'color'='#3c3c3c',
+                                                    'font-family'= 'Arial Narrow',
+                                                    'font-size' = '25px',
+                                                    'font-weight' = '900'
+                                                  ))) %>% 
+  addLabelOnlyMarkers(-73, 2, label = 'COLOMBIA', 
+                      labelOptions = labelOptions(noHide = T, direction = 'top', textOnly = T,
+                                                  style=list(
+                                                    'color'='#3c3c3c',
+                                                    'font-family'= 'Arial Narrow',
+                                                    'font-size' = '25px',
+                                                    'font-weight' = '900'
+                                                  ))) %>% 
+  addLabelOnlyMarkers(-69.5, 0.3, label = 'BRASIL', 
+                      labelOptions = labelOptions(noHide = T, direction = 'top', textOnly = T,
+                                                  style=list(
+                                                    'color'='#3c3c3c',
+                                                    'font-family'= 'Arial Narrow',
+                                                    'font-size' = '27px',
+                                                    'font-weight' = '900'
+                                                  ))) %>%
+  addLabelOnlyMarkers(-69.5, 1.8, label = 'Guainia', 
+                      labelOptions = labelOptions(noHide = T, direction = 'top', textOnly = T,
+                                                  style=list(
+                                                    'color'='#3c3c3c',
+                                                    'font-family'= 'Arial Narrow',
+                                                    'font-size' = '27px',
+                                                    'font-weight' = '900'
+                                                  ))) %>%
+  addLabelOnlyMarkers(-72, 1.5, label = 'Guaviare', 
+                      labelOptions = labelOptions(noHide = T, direction = 'top', textOnly = T,
+                                                  style=list(
+                                                    'color'='#3c3c3c',
+                                                    'font-family'= 'Arial Narrow',
+                                                    'font-size' = '27px',
+                                                    'font-weight' = '900'
+                                                  ))) 
+r
+
+tmp <- paste(tempdir(), 'html', sep ='.')
+htmlwidgets::saveWidget(r, tmp)
+webshot::webshot(tmp, 'ubicacion.jpeg', vwidth = 2560, vheight = 1440)
+
+
+r <- leaflet() %>% 
+  setView(lng =-70, lat = 0.5 , zoom = 9) %>%
+  addProviderTiles(provider = 'OpenStreetMap.DE') %>%
+  addTopoJSON(vaupes,
+              weight = 2,
+              color = '#000000',
+              fill = FALSE) %>% 
+  addTopoJSON(topo_res, weight = 1, color = "#000000",
+              fill = TRUE, fillColor = "#54d6bd", fillOpacity = 0.6) %>% 
+  addLabelOnlyMarkers(-69.5, 0.3, label = 'BRASIL', 
+                      labelOptions = labelOptions(noHide = T, direction = 'top', textOnly = T,
+                                                  style=list(
+                                                    'color'='#3c3c3c',
+                                                    'font-family'= 'Arial Narrow',
+                                                    'font-size' = '27px',
+                                                    'font-weight' = '900'
+                                                  ))) %>% 
+  addLabelOnlyMarkers(-72, 2, label = 'COLOMBIA', 
+                      labelOptions = labelOptions(noHide = T, direction = 'top', textOnly = T,
+                                                  style=list(
+                                                    'color'='#3c3c3c',
+                                                    'font-family'= 'Arial Narrow',
+                                                    'font-size' = '27px',
+                                                    'font-weight' = '900'
+                                                  ))) %>% 
+  addLabelOnlyMarkers(-70.5, 0.5, label = HTML('Gran Resguardo </br> Indígena del Vaupés'), 
+                      labelOptions = labelOptions(noHide = T, direction = 'top', textOnly = T,
+                                                  style=list(
+                                                    'color'='#3c3c3c',
+                                                    'font-family'= 'Arial Narrow',
+                                                    'font-size' = '23px',
+                                                    'font-weight' = '900'
+                                                  ))) %>% 
+  addLabelOnlyMarkers(-71.4, 0.9, label = HTML('Resguardo Bacatí </br> Remanso de Arara  </br> Lagos de Jamaicuru'), 
+                      labelOptions = labelOptions(noHide = T, direction = 'top', textOnly = T,
+                                                  style=list(
+                                                    'color'='#3c3c3c',
+                                                    'font-family'= 'Arial Narrow',
+                                                    'font-size' = '23px',
+                                                    'font-weight' = '900'
+                                                  ))) %>% 
+  addLabelOnlyMarkers(-70.1, -0.9, label = HTML('Resguardo y Parque </br> Nacional Natural </br> Yaigojé –Apaporis'), 
+                      labelOptions = labelOptions(noHide = T, direction = 'top', textOnly = T,
+                                                  style=list(
+                                                    'color'='#3c3c3c',
+                                                    'font-family'= 'Arial Narrow',
+                                                    'font-size' = '23px',
+                                                    'font-weight' = '900'
+                                                  )))
+
+
+r
+tmp <- paste(tempdir(), 'html', sep ='.')
+htmlwidgets::saveWidget(r, tmp)
+webshot::webshot(tmp, 'ubicacion_resguardos.jpeg', vwidth = 2560, vheight = 1440)
+
+topo_par <- readLines("Parques_Nacionales_Naturales_de_Colombia.json") %>% paste(collapse = "\n")
+
+
+
+
+
+
+
+
+
+
+r <- leaflet() %>% 
+  setView(lng =-70, lat = 0.5 , zoom = 9) %>%
+  addProviderTiles(provider = 'OpenStreetMap.DE') %>%
+  addTopoJSON(vaupes,
+              weight = 2,
+              color = '#000000',
+              fill = FALSE) %>% 
+  addTopoJSON(topo_res, weight = 1, color = "#000000",
+              fill = TRUE, fillColor = "#54d6bd", fillOpacity = 0.6) %>% 
+  addPolylines(data = dd, lng = ~lng, lat = ~lat,
+               color = "#ef7f33", weight = 3,
+               opacity = 1, fill = TRUE, fillColor = '#ef7f33',  fillOpacity = 0.6)  %>% 
+  addLabelOnlyMarkers(-69.5, 0.3, label = 'BRASIL', 
+                      labelOptions = labelOptions(noHide = T, direction = 'top', textOnly = T,
+                                                  style=list(
+                                                    'color'='#3c3c3c',
+                                                    'font-family'= 'Arial Narrow',
+                                                    'font-size' = '27px',
+                                                    'font-weight' = '900'
+                                                  ))) %>% 
+  addLabelOnlyMarkers(-72, 2, label = 'COLOMBIA', 
+                      labelOptions = labelOptions(noHide = T, direction = 'top', textOnly = T,
+                                                  style=list(
+                                                    'color'='#3c3c3c',
+                                                    'font-family'= 'Arial Narrow',
+                                                    'font-size' = '27px',
+                                                    'font-weight' = '900'
+                                                  ))) %>% 
+  addLabelOnlyMarkers(-70.5, 0.5, label = HTML('Gran Resguardo </br> Indígena del Vaupés'), 
+                      labelOptions = labelOptions(noHide = T, direction = 'top', textOnly = T,
+                                                  style=list(
+                                                    'color'='#3c3c3c',
+                                                    'font-family'= 'Arial Narrow',
+                                                    'font-size' = '23px',
+                                                    'font-weight' = '900'
+                                                  ))) %>% 
+  addLabelOnlyMarkers(-71.4, 0.9, label = HTML('Resguardo Bacatí </br> Remanso de Arara  </br> Lagos de Jamaicuru'), 
+                      labelOptions = labelOptions(noHide = T, direction = 'top', textOnly = T,
+                                                  style=list(
+                                                    'color'='#3c3c3c',
+                                                    'font-family'= 'Arial Narrow',
+                                                    'font-size' = '23px',
+                                                    'font-weight' = '900'
+                                                  ))) %>% 
+  addLabelOnlyMarkers(-70.1, -0.9, label = HTML('Resguardo y Parque </br> Nacional Natural </br> Yaigojé –Apaporis'), 
+                      labelOptions = labelOptions(noHide = T, direction = 'top', textOnly = T,
+                                                  style=list(
+                                                    'color'='#3c3c3c',
+                                                    'font-family'= 'Arial Narrow',
+                                                    'font-size' = '23px',
+                                                    'font-weight' = '900'
+                                                  )))
+
+
+r
+tmp <- paste(tempdir(), 'html', sep ='.')
+htmlwidgets::saveWidget(r, tmp)
+webshot::webshot(tmp, 'ubicacion_resguardos_concesion.jpeg', vwidth = 2560, vheight = 1440)
+
+topo_par <- readLines("Parques_Nacionales_Naturales_de_Colombia.json") %>% paste(collapse = "\n")
+
+
+
+# p <- leaflet() %>% 
+#   setView(lng =-74.063644, lat = 4.62 , zoom = 6) %>% 
+#   addTiles() %>%
+#   addTopoJSON(topo_par, weight = 1, color = "#444444",
+#               fill = TRUE, fillColor = "#2d572c", fillOpacity = 0.8)
+# htmlwidgets::saveWidget(p, 'parques.html')
+# 
+# 
+# pr <- leaflet() %>% 
+#   setView(lng =-74.063644, lat = 4.62 , zoom = 6) %>% 
+#   addTiles() %>%
+#   addTopoJSON(topo_par, weight = 1, color = "#444444",
+#               fill = TRUE, fillColor = "#000000", fillOpacity = 0.8) %>% 
+#   addTopoJSON(topo_res, weight = 1, color = "#444444",
+#               fill = TRUE, fillColor = "#e30052", fillOpacity = 0.5)
+# 
+# htmlwidgets::saveWidget(pr, 'resguardos_parques.html')
